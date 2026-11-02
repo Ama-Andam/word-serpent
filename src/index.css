@@ -1,0 +1,166 @@
+@import "tailwindcss";
+
+/* Dark mode is driven by a `.dark` class on <html> (set by the theme toggle). */
+@custom-variant dark (&:where(.dark, .dark *));
+
+/*
+ * Design tokens. Components only use these semantic names, never raw hex.
+ * Light = "paper", dark = "ink". Each accent carries one meaning:
+ *   ember  → energy: combo, streak, goal progress, drift timer
+ *   arcane → XP and levels
+ *   mint   → completion: goals hit, badges, correct keystrokes
+ */
+:root {
+  --bg: #f6f2ea;
+  --surface: #fbf8f2;
+  --surface-2: #efe9dd;
+  --line: #e2dacb;
+  --ink: #1d1b17;
+  --muted: #6b6458;
+  --ember: #d9480f;
+  --ember-soft: #fbe3d3;
+  --ember-ink: #8a2e0b;
+  --arcane: #5b4bd6;
+  --arcane-soft: #e7e3f7;
+  --arcane-ink: #3b2f8c;
+  --mint: #2f9e6e;
+  --mint-soft: #ddf1e6;
+  --mint-ink: #1b6b49;
+  --danger: #c2362b;
+  --shadow: 0 1px 2px rgb(29 27 23 / 0.06), 0 12px 32px -12px rgb(29 27 23 / 0.18);
+  color-scheme: light;
+}
+
+.dark {
+  --bg: #141318;
+  --surface: #1b1a20;
+  --surface-2: #232129;
+  --line: #2e2c35;
+  --ink: #ece8e1;
+  --muted: #a29c92;
+  --ember: #ff7a3d;
+  --ember-soft: #3a1d10;
+  --ember-ink: #ffb48a;
+  --arcane: #8b7cf6;
+  --arcane-soft: #262145;
+  --arcane-ink: #c3b9ff;
+  --mint: #4fd19a;
+  --mint-soft: #12301f;
+  --mint-ink: #7fe3b5;
+  --danger: #ff6b5e;
+  --shadow: 0 1px 2px rgb(0 0 0 / 0.4), 0 16px 40px -12px rgb(0 0 0 / 0.6);
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-line: var(--line);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-ember: var(--ember);
+  --color-ember-soft: var(--ember-soft);
+  --color-ember-ink: var(--ember-ink);
+  --color-arcane: var(--arcane);
+  --color-arcane-soft: var(--arcane-soft);
+  --color-arcane-ink: var(--arcane-ink);
+  --color-mint: var(--mint);
+  --color-mint-soft: var(--mint-soft);
+  --color-mint-ink: var(--mint-ink);
+  --color-danger: var(--danger);
+
+  /* shadcn-style aliases so 21st.dev components work without edits */
+  --color-primary: var(--ink);
+  --color-primary-foreground: var(--bg);
+  --color-secondary: var(--surface-2);
+  --color-secondary-foreground: var(--ink);
+  --color-accent: var(--surface-2);
+  --color-accent-foreground: var(--ink);
+  --color-destructive: var(--danger);
+  --color-destructive-foreground: #fff;
+  --color-background: var(--bg);
+  --color-input: var(--line);
+  --color-ring: var(--arcane);
+
+  --font-sans: "Geist", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, SFMono-Regular, monospace;
+  --font-serif: "Newsreader", ui-serif, Georgia, serif;
+
+  --shadow-lift: var(--shadow);
+
+  --animate-shake: shake 260ms ease-out;
+  --animate-pop: pop 320ms cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-4px); }
+  75% { transform: translateX(4px); }
+}
+
+@keyframes pop {
+  0% { transform: scale(0.6); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+html,
+body,
+#root {
+  min-height: 100dvh;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: "ss01";
+}
+
+/* Smooth color crossfade while switching themes (class added for ~300ms). */
+.theme-transition,
+.theme-transition * {
+  transition: background-color 300ms ease, color 300ms ease, border-color 300ms ease !important;
+}
+
+::selection {
+  background: var(--arcane-soft);
+  color: var(--ink);
+}
+
+/* In the base layer so utilities like `outline-none` can override it. */
+@layer base {
+  :focus-visible {
+    outline: 2px solid var(--arcane);
+    outline-offset: 2px;
+  }
+}
+
+.tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@keyframes fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes dialog-in {
+  from { opacity: 0; transform: scale(0.96); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes drawer-in {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
